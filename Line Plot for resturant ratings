@@ -1,0 +1,22 @@
+#Line Plot
+import pandas as pd import matplotlib.pyplot as plt
+# Load the CSV files into pandas DataFrames 
+restaurants_df = pd.read_csv('restaurants.csv') 
+ratings_df = pd.read_csv('ratings.csv')
+# Merge the DataFrames on a common column, such as restaurant ID 
+merged_df = pd.merge(restaurants_df, ratings_df, on='Restaurant_ID')
+# Calculate the average ratings for each restaurant 
+average_ratings = merged_df.groupby('Name')['Food_Rating'].mean().reset_index()
+# Sort the restaurants by average rating 
+sorted_ratings = average_ratings.sort_values(by='Food_Rating', ascending=False)
+# Select the top 14 restaurants 
+top_15_ratings = sorted_ratings.head(14)
+# Plot the line graph
+ plt.figure(figsize=(10, 6)) 
+plt.plot(top_15_ratings['Name'], top_15_ratings['Food_Rating'], marker='o', color='Orange', linestyle='-') 
+plt.xlabel('Restaurant') 
+plt.ylabel('Average Rating') 
+plt.title('Top 15 Restaurants by Average Ratings') 
+plt.xticks(rotation=90) 
+plt.tight_layout() 
+plt.grid(True) .plt.show()
