@@ -1,0 +1,22 @@
+import pandas as pd import matplotlib.pyplot as plt
+# Load the CSV files into pandas DataFrames 
+restaurants_df = pd.read_csv('restaurants.csv') ratings_df = pd.read_csv('ratings.csv')
+# Merge the DataFrames on a common column, such as restaurant ID 
+merged_df = pd.merge(restaurants_df, ratings_df, on='Restaurant_ID')
+# Calculate the average ratings for each restaurant 
+average_ratings = merged_df.groupby('Name')['Food_Rating'].mean().reset_index()
+# Sort the restaurants by average rating 
+sorted_ratings = average_ratings.sort_values(by='Food_Rating', ascending=False)
+# Select the top 15 restaurants 
+top_15_ratings = sorted_ratings.head(15)
+# Filter the merged DataFrame for the top 15 restaurants 
+top_15_data = merged_df[merged_df['Name'].isin(top_15_ratings['Name'])]
+# Create a box plot for the ratings of the top 15 restaurants 
+plt.figure(figsize=(10, 6)) 
+plt.boxplot(top_15_data['Food_Rating'], patch_artist=True, showmeans=True) 
+plt.xlabel('Top 15 Restaurants') 
+plt.ylabel('Ratings') 
+plt.title('Box Plot of Ratings for Top 15 Restaurants') 
+plt.xticks([1], ['Top 15 Restaurants'])  
+# Customizing x-axis tick labels
+plt.grid(True) plt.tight_layout() plt.show()
